@@ -5,7 +5,7 @@
 By Tim Caswell
 
 
-<img style="border:0;box-shadow:inherit;background:inherit" src="creationix-logo.svg" alt="Creationix Innovations">
+<img style="border:0;box-shadow:inherit;background:inherit" src="creationix-logo.png" alt="Creationix Innovations">
 
 
 ## BackStory
@@ -34,15 +34,18 @@ By Tim Caswell
  - Nobody wants to break the web.
 
 
-## A Lua Experiment
+
+# A Lua Experiment
 
  - I heard good things about Lua.
  - Lua is compatable with node.js style APIs
  - Lua has coroutines.
 
 
+## HTTP Server
+
 ```lua
-local http = require "http"
+local http = require("http")
 
 http.createServer(function (req, res)
   res.writeHead(200, {
@@ -54,5 +57,56 @@ end).listen(8080)
 ```
 
 
+## HTTP Client
 
-<img style="border:0;box-shadow:inherit;background:inherit" src="creationix-logo.svg" alt="Creationix Innovations">
+```lua
+local http = require('http')
+
+local req = http.request({
+  host = "luvit.io",
+  port = 80, path = "/"
+}, function (res)
+  res:on('data', function (chunk)
+    p("ondata", {chunk=chunk})
+  end)
+end)
+req:done()
+```
+
+
+## Faux Blocking on I/O
+
+```lua
+local data = await(fs.readFile("myfile.txt"))
+local sql = "SELECT * FROM people"
+local result = await(db.query(sql))
+
+print(data, result)
+```
+
+
+## Luvit was Born
+
+<a href="http://luvit.io/">
+<img src="luvit-logo.png" style="border:none;background-inherit;box-shadow:inherit">
+</a>
+
+
+
+# Continuables
+
+
+
+# Simple Streams
+
+
+
+# FileSystem and TCP
+
+
+
+# HTTP Web API
+
+
+
+<img style="border:0;box-shadow:inherit;background:inherit" src="creationix-logo.png" alt="Creationix Innovations">
