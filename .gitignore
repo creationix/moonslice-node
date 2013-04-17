@@ -3,3 +3,4 @@ node_modules
 config.bak
 config.json
 tags
+nohup.out

@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/theme/serif.css" id="theme">                                            
                                                                                                                
     <!-- For syntax highlighting -->                                                                           
-    <link rel="stylesheet" href="lib/css/zenburn.css">                                                         
+    <link rel="stylesheet" href="lib/css/tomorrow.css">                                                         
                                                                                                                
     <!-- If the query includes 'print-pdf', use the PDF print sheet -->                                        
     <script>                                                                                            
@@ -63,111 +63,4 @@
                         });
 
                 </script>
-
-<!--
-        <section data-markdown>
-
-        <section>
-            <h1>Rethinking Node</h1>
-            <p>By Tim Caswell</p>
-        </section>
-
-        <section>
-            <h2>A Little History</h2>
-            <p>
-                <ul>
-                    <li>Node.js was started about 4 years ago.</li>
-                    <li>Goal was to be fast like nginx and fun like rails.</li>
-                    <li>I joined the community that summer.</li>
-                    <li>APIs changed daily breaking everyone's apps.</li>
-                    <li>Experimentation was everywhere.</li>
-                </ul>
-            </p>
-        </section>
-        
-        <section>
-            <h2>The Frameworks</h2>
-            <div>
-                <ul>
-                    <li>In order to shield consumers from the changes frameworks were created.</li>
-                    <li>Express was the first popular one.</li>
-                    <li>I created connect as a common interface between http libraries.</li>
-                    <li>Express was rewritten to use connect.</li>
-                </ul>
-            </div>
-        </section>
-        
-        <section>
-            <h2>Maturity</h2>
-            <div>
-                <ul>
-                    <li>Eventually node.js grew up and became "mature"</li>
-                    <li>This meant that new releases weren't allowed to break everyone's programs.</li>
-                    <li>APIs were locked in place.</li>
-                    <li>The standard interfaces were callbacks, emitters, and streams.</li>
-                    <li>Experimenters were often met with hostile reactions to people invested in the stability.</li>
-                    <li>But there were still unsolved problems.</li>
-                </ul>
-            </div>
-        </section>
-        <section>
-            <h2>Pain Points</h2>
-            <div>
-                <ul>
-                    <li>"Callbacks are hard -&nbsp;<span style="letter-spacing: -0.02em;">I can't code like this"</span>
-                </li>
-                <li>Most node talks were about how to do flow-control.</li>
-                <li>Finding experienced developers who could write clean code were very hard to find.</li>
-                <li>Error handling was near impossible to do right.</li>
-                <li>Servers were unstable if not written "right".</li>
-                <li>Connect turned out to have composability issues.</li>
-                <li>Streams leaked data in some cases.</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <h2>I Went on a Journey</h2>
-<div>
-    <ul>
-        <li>It became clear I would have to leave the node community to explore possible solutions to node's problems.</li>
-        <li>Lua looked interesting, it was simple and had coroutines which were an alternative to the callback mess.</li>
-        <li>I re-implemented node in lua. &nbsp;This became the <a href="http://luvit.io/">Luvit</a> project.</li>
-        <li>I realized that cloning node's APIs in lua didn't solve much except saving on memory usage.</li>
-        <li>I broke away from node style APIs and developed moonslice.</li>
-    </ul>
-</div>
-</section>
-    </section>
-    <section>
-        <h2>Continuable</h2>
-<p>A function that accepts a continuation. &nbsp;It represents an async action that may call the continuation now or call it later.</p>
-<p>
-</p>
-<pre>
-        <code class="javascript">fs.readFile("myfile.txt") -&gt; continuable</code>
-    </pre>
-<p>
-</p>
-</section>
-    <section>
-        <h2>Streams</h2>
-    </section>
-    <section>
-        <h2>Fibers</h2>
-    </section>
-    <section>
-        <h2>Web</h2>
-    </section>
-    <section>
-        <p>
-<img style="border:0;" src="http://creationix.com/creationix-logo.png">
-</p>
-
-</section>
-    </div>
-</div>
-</body> 
-</html>   
--->
-    
 </body></html>

@@ -5,6 +5,9 @@
 By Tim Caswell
 
 
+<img style="border:0;box-shadow:inherit;background:inherit" src="creationix-logo.svg" alt="Creationix Innovations">
+
+
 ## BackStory
 
  - I've contributed to node.js since the very beginning.
@@ -13,19 +16,43 @@ By Tim Caswell
  - I've seen the rise and fall of many web frameworks.
 
 
-## What is Wrong with Node
+## What was Wrong with Node
 
- - Callbacks are hard (to many people)
- - Streams leak events (fixed in 0.10.x)
+ - Callbacks are hard.
+ - Streams leak events.
+ - HTTP route layers are hard to compose.
+ - Websocket requests do not emit "request" events.
+ - Proper error handling was near impossible.
+ - Servers would often be unstable.
 
 
-This talk is about what we did wrong and what I would do differently if given the chance. I'll propose a new web layer complete with a prototype implementation that runs in the existing node.js runtime. The changes will involve everything from the callback style to the stream interface, to the node `(req, res)` HTTP handler interface.
+## Change is Hard
 
-I've been researching these new APIs for the last year and even ported node to another language (Lua) just to have more room to experiment.
+ - Node is used in production at many companies.
+ - Changing APIs is *very* expensive.
+ - Language changes were slow for the same reasons.
+ - Nobody wants to break the web.
 
 
-## Second Slide
+## A Lua Experiment
 
-This is a para
+ - I heard good things about Lua.
+ - Lua is compatable with node.js style APIs
+ - Lua has coroutines.
 
-this is another
+
+```lua
+local http = require "http"
+
+http.createServer(function (req, res)
+  res.writeHead(200, {
+    ["Content-Length"] = 12,
+    ["Content-Type"] = "text/plain"
+  })
+  res.end("Hello World\n")
+end).listen(8080)
+```
+
+
+
+<img style="border:0;box-shadow:inherit;background:inherit" src="creationix-logo.svg" alt="Creationix Innovations">

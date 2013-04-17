@@ -135,3 +135,13 @@ body {
   -ms-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   -o-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+
+.reveal li {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.reveal pre {
+  font-size: 24pt;
+  line-height: 1.2em;
+  padding: 5px;
+}
