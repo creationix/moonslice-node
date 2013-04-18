@@ -145,3 +145,11 @@ body {
   line-height: 1.1em;
   padding: 5px;
 }
+.reveal pre code {
+  max-height:450px;
+}
+.reveal pre code.small {
+  font-size: 70%;
+  line-height: 1.1em;
+  max-height:500px;
+}

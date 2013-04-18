@@ -122,6 +122,7 @@ continuable(function (err, data) {
  - Since the callback isn't the last arg in the original call, optional args are much easier to implement.
  - Having a return value you can manipulate control-flow helpers much easier to write.
 
+
 ## Continuation
 
  - The continuation is a normal node.js style callback.
@@ -138,7 +139,7 @@ function readFile(path) {
 ```
 
 
-## Await
+## $wait
 
  - When we have fibers we can do something awesome with these.
  - We can suspend the current fiber and resume it when the continuable resolves.
@@ -146,7 +147,7 @@ function readFile(path) {
  - But we're still single-threaded and non-blocking at the process level.
 
 
-## Await Example
+## $wait Example
 
 ```javascript
 var Fiber = require('fibers');
@@ -215,10 +216,11 @@ console.log("End of stream.");
 
 ## Buffer a Stream
 
-```javascript
+```small
 function buffer(readable) {
   return function (callback) {
     var sync, parts = [];
+    read();
     function read() {
       do {
         sync = undefined;
@@ -233,7 +235,6 @@ function buffer(readable) {
       if (sync === undefined) { sync = true; }
       else { read(); }
     }
-    read();
   };
 }
 ```
@@ -255,10 +256,11 @@ function $buffer(readable) {
 
 ## Pipe two Streams
 
-```javascript
+```small
 function pipe(readable, writable) {
   return function (callback) {
     var sync;
+    read();
     function read() {
       do {
         sync = undefined;
@@ -268,8 +270,7 @@ function pipe(readable, writable) {
     }
     function onRead(err, data) {
       if (err) return callback(err);
-      if (data) { writable.write(data)(onWrite); }
-      else { writable.write(data)(callback); }
+      writable.write(data)(data ? onWrite : callback);
     }
     function onWrite(err) {
       if (err) return callback(err);
@@ -356,7 +357,6 @@ function app(request) {
 If you want custom headers or status code, return an object.
 
 ```javascript
-
 function app(request) {
   return {
     // status code
@@ -426,18 +426,34 @@ function log(app) {
 
 There is a continuable version too
 
-```js
-function log(app) { return function (request) {
-  return function (callback) {
-    var continuable = normalize(app(request));
-    continuable(function (err, response) {
-      if (err) return callback(err);
-      console.log(request.url, request.method,
-                  response.code);
-      callback(null, response);
-    });
+```javascript
+function log(app) {
+  return function (request) {
+    return function (callback) {
+      var continuable = normalize(app(request));
+      continuable(function (err, response) {
+        if (err) return callback(err);
+        console.log(request.url, request.method,
+                    response.code);
+        callback(null, response);
+      });
+    };
   };
-}}
+}
+```
+
+
+## Using the wrapper
+
+Simply decorate the app with the wrapper.
+
+```javascript
+var app = function (request) {
+  return "Hello World";
+}
+
+// Wrap the function in a new function.
+var loggedApp = log(app);
 ```
 
 
