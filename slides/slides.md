@@ -90,8 +90,6 @@ print(data, result)
 ```
 
 
-## Luvit was Born
-
 <a href="http://luvit.io/">
 <img src="luvit-logo.png" style="border:none;background-inherit;box-shadow:inherit">
 </a>
@@ -117,10 +115,11 @@ continuable(function (err, data) {
 ```
 
 
-## Continuable
+## Continuable Benefits
 
  - Since the callback isn't the last arg in the original call, optional args are much easier to implement.
  - Having a return value you can manipulate control-flow helpers much easier to write.
+ - Enables faux blocking!
 
 
 ## Continuation
