@@ -482,7 +482,8 @@ server.on('connection', handler);
 
  - Continuable style streams are implemented.
  - The `fibers` module on npm provides the fiber support.
- - The older web app specification is implemented, but needs porting to use continuables.
+ - the HTTP codec is in progress.
+ - See code at <https://github.com/creationix/moonslice-node.git>
 
 
 
