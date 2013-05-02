@@ -1,19 +1,21 @@
 var tcp = require('./lib/tcp');
-var Fiber = require('fibers');
 
-var server = tcp.createServer("0.0.0.0", 3000, function (client) {
-  Fiber(function () {
-    var chunk;
-    console.log("Writing greeting");
-    client.$write("Welcome to the echo server.\r\n");
-    do {
-      // console.log("Reading data");
-      chunk = client.$read();
-      // console.log("read", chunk);
-      // console.log("writing data...");
-      client.$write(chunk);
-      // console.log("written.");
-    } while (chunk !== undefined);
-  }).run();
+var server = tcp.createServer("0.0.0.0", 3000, function (source, sink) {
+  sink(source);
 });
 console.log("TCP echo server listening at", server.getsockname());
+
+
+  // console.log("New connection");
+  // stream(null, onRead);
+  // function onRead(err, data) {
+  //   if (err) throw err;
+  //   console.log({data:data});
+  //   if (data) {
+  //     console.log("asking for more data in a while");
+  //     setTimeout(function () {
+  //       console.log("asking now");
+  //       stream(null, onRead);
+  //     }, 5000);
+  //   }
+  // }
