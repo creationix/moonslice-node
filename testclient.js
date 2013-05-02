@@ -1,6 +1,7 @@
 var tcp = require('./lib/tcp');
 var helpers = require('./testhelpers');
 var readline = require('readline');
+var inspect = require('util').inspect;
 
 var host = process.argv[2];
 var port = parseInt(process.argv[3], 10);
@@ -13,27 +14,43 @@ if (!host || !port) {
 // Build pull versions of the line codecs
 var lineDecode = helpers.pushToPull(helpers.lineDecode);
 var lineEncode = helpers.pushToPull(helpers.lineEncode);
+var jsonToInspect = helpers.mapToPull(function (item) {
+  return inspect(JSON.parse(item), {colors:true});
+});
 
 console.log("Connecting...");
 var client = tcp.connect(host, port, function (err, socket) {
   if (err) throw err;
-  var repl = makeRepl("Connected");
+  var repl = makeRepl();
+  repl.print("Connected", "green");
 
+  var jsToJson = helpers.mapToPull(function (item) {
+    try {
+      return JSON.stringify(eval("(" + item + ")"));
+    }
+    catch (err) {
+      repl.print(err.stack, "red");
+      return "";
+    }
+  });
   // Pipe the socket and the repl together
-  repl.sink(lineDecode(socket.source));
-  socket.sink(lineEncode(repl.source));
+  repl.sink(jsonToInspect(lineDecode(socket.source)));
+  socket.sink(lineEncode(jsToJson(repl.source)));
 });
 
-function makeRepl(welcome) {
-  var red = '\033[31m';
-  var green = '\033[32m';
-  var blue = '\033[34m';
-  var plain = '\033[39m';
+function makeRepl() {
+  var colors = {
+    red: '\033[31m',
+    green: '\033[32m',
+    yellow: '\033[33m',
+    blue: '\033[34m',
+    plain: '\033[39m'
+  };
   var pipe = helpers.makePipe();
 
   function print(msg, color) {
     if (color) {
-      msg = color + msg + plain;
+      msg = colors[color] + msg + colors.plain;
     }
     return process.stdout.write('\033[2K\033[E' + msg + '\n');
   }
@@ -53,20 +70,18 @@ function makeRepl(welcome) {
 
   rl.prompt();
 
-  print(welcome, green);
-
   function onData(err, item) {
     if (item === undefined) {
       if (err) {
-        print(err.stack, red);
+        print(err.stack, "red");
       }
       else {
-        print("Closing...", green);
+        print("Closing...", "green");
       }
       process.exit(err ? -1 : 0);
     }
     else {
-      print("< " + item, blue);
+      print("< " + item);
       rl.prompt();
     }
   }
@@ -74,7 +89,8 @@ function makeRepl(welcome) {
     source: pipe.read,
     sink: function (read) {
       helpers.consume(read, onData);
-    }
+    },
+    print: print
   };
 }
 

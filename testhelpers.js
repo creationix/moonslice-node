@@ -25,7 +25,14 @@ function mapToPull(map) {
       if (close) return read(close);
       read(null, function (err, item) {
         if (item === undefined) return callback(err);
-        callback(null, map(item));
+        var mapped;
+        try {
+          mapped = map(item);
+        }
+        catch (err) {
+          return callback(err);
+        }
+        callback(null, mapped);
       });
     };
   };
