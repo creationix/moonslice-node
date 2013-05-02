@@ -1,11 +1,13 @@
-
+var arr = function (val) {
+  return Array.prototype.slice.call(val);
+};
 var tcp = require('./lib/tcp');
 
 // A silly app that echos objects and warns on other inputs.
 // Implemented as an (emit -> emit) push filter
 var app = function (emit) {
   return function (err, item) {
-    console.log("app", arguments);
+    console.log("app", arr(arguments));
     if (item === undefined) {
       if (err) {
         // Forward parsing errors to the user as a message.
@@ -54,7 +56,7 @@ console.log("TCP echo server listening at", server.getsockname());
 function mapToPush(map, name) {
   return function (emit) {
     return function (err, item) {
-      console.log(name || "mapToPush", arguments);
+      console.log(name || "mapToPush", arr(arguments));
       if (item === undefined) return emit(err);
       var mapped;
       try {
@@ -101,6 +103,7 @@ function pushToPull(pushFilter) {
     var dataQueue = [];
     var readQueue = [];
     var write = pushFilter(function () {
+      console.log("combined", arr(arguments));
       dataQueue.push(arguments);
     });
     var reading;
@@ -133,7 +136,7 @@ function pushToPull(pushFilter) {
 function lineDecode(emit) {
   var message = "";
   return function (err, item) {
-    console.log("lineDecode", arguments);
+    console.log("lineDecode", arr(arguments));
     if (item === undefined) return emit(err);
     for (var i = 0, l = item.length; i < l; i++) {
       var byte = item[i];
@@ -156,7 +159,7 @@ function lineDecode(emit) {
 // output: items with newline
 function lineEncode(emit) {
   return function (err, item) {
-    console.log("lineEncode", arguments);
+    console.log("lineEncode", arr(arguments));
     if (item === undefined) return emit(err);
     emit(null, item);
     emit(null, "\n");
